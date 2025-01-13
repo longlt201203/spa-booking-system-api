@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - ${DB_PORT}:3306
+    volumes:
+      - sbs_db_vol:/var/lib/mysql
+    networks:
+      - sbs_net
+
+networks:
+  sbs_net:
+    driver: bridge
+
+volumes:
+  sbs_db_vol:
