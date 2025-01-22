@@ -9,13 +9,13 @@ export interface ICustomer {
 	address: Array<string>;
 	dob: Date;
 }
-export type AccountDocumentType = HydratedDocument<IAccount>;
+export type CustomerDocumentType = HydratedDocument<ICustomer>;
 export type CustomerModelType = Model<
 	ICustomer,
 	{},
 	{},
 	{},
-	AccountDocumentType
+	CustomerDocumentType
 >;
 
 const customerSchema = new Schema<ICustomer, CustomerModelType>({

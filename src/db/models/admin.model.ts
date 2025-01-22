@@ -7,8 +7,8 @@ export interface IAdmin {
 	lName: string;
 	avt?: string;
 }
-export type AccountDocumentType = HydratedDocument<IAccount>;
-export type AdminModelType = Model<IAdmin, {}, {}, {}, AccountDocumentType>;
+export type AdmintDocumentType = HydratedDocument<IAdmin>;
+export type AdminModelType = Model<IAdmin, {}, {}, {}, AdmintDocumentType>;
 const adminSchema = new Schema<IAdmin, AdminModelType>({
 	account: {
 		type: Schema.Types.ObjectId,
