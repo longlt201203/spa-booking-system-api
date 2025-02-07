@@ -39,9 +39,10 @@ export class MyExceptionFilter implements ExceptionFilter {
 				detail: exception.getResponse(),
 				status: exception.getStatus(),
 			};
-		} else {
+		} else if (exception.message) {
 			// Log unexpected errors for debugging.
 			console.error(exception);
+			data.message = exception.message;
 		}
 
 		// Send the formatted error response.

@@ -5,3 +5,4 @@ export * from "./pagination.dto";
 export * from "./api-response.dto";
 export * from "./multer-storage";
 export * from "./enums";
+export * from "./is-object-id.validator";
