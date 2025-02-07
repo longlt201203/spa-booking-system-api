@@ -1,24 +1,24 @@
-import { IAccount } from "@db/models/account.model";
+import { SpaDocumentType } from "@db/models/spa-staff.model";
 import mongoose, { HydratedDocument, Model, Schema } from "mongoose";
 
 export interface ISpaOwner {
-	account: IAccount;
+	spa: SpaDocumentType;
 	fName: string;
 	lName: string;
 	avt?: string;
 }
-export type AccountDocumentType = HydratedDocument<IAccount>;
+export type SpaOwnerDocumentType = HydratedDocument<ISpaOwner>;
 export type SpaOwnerModelType = Model<
 	ISpaOwner,
 	{},
 	{},
 	{},
-	AccountDocumentType
+	SpaOwnerDocumentType
 >;
 const spaOwnerSchema = new Schema<ISpaOwner, SpaOwnerModelType>({
-	account: {
+	spa: {
 		type: Schema.Types.ObjectId,
-		ref: "Account",
+		ref: "Spa",
 		required: true,
 		unique: true,
 	},

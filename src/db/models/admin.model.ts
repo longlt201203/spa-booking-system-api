@@ -1,14 +1,14 @@
-import { IAccount } from "@db/models/account.model";
+import { AccountDocumentType, IAccount } from "@db/models/account.model";
 import mongoose, { HydratedDocument, Model, Schema } from "mongoose";
 
 export interface IAdmin {
-	account: IAccount;
+	account: AccountDocumentType;
 	fName: string;
 	lName: string;
 	avt?: string;
 }
-export type AccountDocumentType = HydratedDocument<IAccount>;
-export type AdminModelType = Model<IAdmin, {}, {}, {}, AccountDocumentType>;
+export type AdmintDocumentType = HydratedDocument<IAdmin>;
+export type AdminModelType = Model<IAdmin, {}, {}, {}, AdmintDocumentType>;
 const adminSchema = new Schema<IAdmin, AdminModelType>({
 	account: {
 		type: Schema.Types.ObjectId,
