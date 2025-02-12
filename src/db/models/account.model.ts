@@ -6,9 +6,12 @@ export interface IAccount {
 	phone: string;
 	password: string;
 	role: AccountRoleEnum;
-	avt?: string;
 	createdAt: Date;
 	updatedAt: Date;
+	fName: string;
+	lName: string;
+	dob?: string;
+	avt?: string;
 }
 
 export type AccountDocumentType = HydratedDocument<IAccount>;
@@ -19,8 +22,15 @@ const AccountSchema = new Schema<IAccount, AccountModelType>({
 	email: { type: String, required: true, unique: true },
 	phone: { type: String, required: true, unique: true },
 	password: { type: String, required: true },
-	role: { type: Number, enum: AccountRoleEnum },
+	role: {
+		type: Number,
+		enum: AccountRoleEnum,
+		default: AccountRoleEnum.CUSTOMER,
+	},
 	avt: { type: String, required: false },
+	fName: { type: String, required: true },
+	lName: { type: String, required: true },
+	dob: { type: String, required: false },
 	createdAt: { type: Date, default: () => new Date() },
 	updatedAt: { type: Date, default: () => new Date() },
 });

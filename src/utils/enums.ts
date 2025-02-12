@@ -1,4 +1,9 @@
-export enum AccountRoleEnum {}
+export enum AccountRoleEnum {
+	CUSTOMER,
+	SPA_STAFF,
+	SPA_OWNER,
+	ADMIN,
+}
 
 export enum AppointmentStatusEnum {
 	PENDING,
