@@ -4,9 +4,12 @@ import { AppService } from "./app.service";
 import { APP_FILTER, APP_PIPE } from "@nestjs/core";
 import { MyExceptionFilter, ValidationPipe } from "@utils";
 import { CategoryModule } from "@modules/category";
+import { SpaModule } from "@modules/spa";
+import { ServiceModule } from "@modules/service";
+import { FeedbackModule } from "@modules/feedback";
 
 @Module({
-	imports: [CategoryModule],
+	imports: [CategoryModule, SpaModule, ServiceModule, FeedbackModule],
 	controllers: [AppController],
 	providers: [
 		AppService,
