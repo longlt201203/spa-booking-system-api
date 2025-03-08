@@ -1,15 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { AccountRoleEnum } from "@utils";
 import {
-	IsDate,
 	IsEmail,
-	IsEnum,
 	IsOptional,
 	IsString,
 	IsStrongPassword,
 } from "class-validator";
 
-export class CreateAccountRequest {
+export class RegisterRequest {
 	@ApiProperty({ example: "example@mail.com" })
 	@IsEmail()
 	email: string;
@@ -27,10 +24,6 @@ export class CreateAccountRequest {
 		minUppercase: 1,
 	})
 	password: string;
-
-	@ApiProperty()
-	@IsEnum(AccountRoleEnum)
-	role: AccountRoleEnum;
 
 	@ApiProperty()
 	@IsString()

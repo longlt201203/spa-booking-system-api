@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { LoginRequest, TokenResponse } from "./dto";
+import { LoginRequest, RegisterRequest, TokenResponse } from "./dto";
 import { Env, SbsClsStore } from "@utils";
 import { WrongUsernameOrPasswordError } from "./errors";
 import { AccountModel } from "@db/models";
@@ -40,5 +40,25 @@ export class AuthService {
 		if (!bcrypt.compareSync(password, account.password))
 			throw new WrongUsernameOrPasswordError();
 		return this.signTokens(account.id);
+	}
+
+	async register(dto: RegisterRequest) {
+		const account = new AccountModel({
+			...dto,
+			password: await bcrypt.hash(dto.password, 10),
+		});
+		return account.save();
+	}
+
+	async updateProfile(dto: RegisterRequest) {
+		const accountId = this.cls.get("account.id");
+		return await AccountModel.findByIdAndUpdate(
+			accountId,
+			{
+				...dto,
+				password: await bcrypt.hash(dto.password, 10),
+			},
+			{ new: true },
+		);
 	}
 }

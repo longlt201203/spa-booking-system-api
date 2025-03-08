@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { LoginRequest, TokenResponse } from "./dto";
+import { LoginRequest, RegisterRequest, TokenResponse } from "./dto";
 import { ApiResponseDto, SwaggerApiResponse } from "@utils";
 import { AccountResponse } from "@modules/account/dto";
 import { ApiBearerAuth } from "@nestjs/swagger";
@@ -24,5 +24,18 @@ export class AuthController {
 	async login(@Body() dto: LoginRequest) {
 		const data = await this.authService.login(dto);
 		return new ApiResponseDto(data, null, "Login successful");
+	}
+
+	@Post("register")
+	@SkipAuth()
+	async register(@Body() dto: RegisterRequest) {
+		await this.authService.register(dto);
+		return new ApiResponseDto(null, null, "Success!");
+	}
+
+	@Put("profile")
+	async updateProfile(@Body() dto: RegisterRequest) {
+		await this.authService.updateProfile(dto);
+		return new ApiResponseDto(null, null, "Success!");
 	}
 }
