@@ -14,8 +14,10 @@ import {
 	UpdateCategoryRequest,
 } from "./dto";
 import { ApiResponseDto, SwaggerApiResponse } from "@utils";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 @Controller("category")
+@ApiBearerAuth()
 export class CategoryController {
 	constructor(private readonly categoryService: CategoryService) {}
 

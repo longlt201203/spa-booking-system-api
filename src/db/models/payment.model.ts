@@ -1,5 +1,5 @@
 import { PaymentMethodEnum, PaymentStatusEnum } from "@utils";
-import { AppointmentDocumentType } from "./appointment.model";
+import { AppointmentDocumentType, IAppointment } from "./appointment.model";
 import mongoose, { HydratedDocument, Model, Schema } from "mongoose";
 
 export interface IPayment {
@@ -9,6 +9,10 @@ export interface IPayment {
 	updatedAt: Date;
 	method: PaymentMethodEnum;
 	status: PaymentStatusEnum;
+	orderCode?: string;
+	payosTransactionId?: string;
+	payerName?: string;
+	amountPaid?: number;
 }
 
 export type PaymentDocumentType = HydratedDocument<IPayment>;
@@ -26,6 +30,10 @@ const PaymentSchema = new Schema<IPayment, PaymentModelType>({
 	updatedAt: { type: Date, default: () => new Date() },
 	method: { type: Number, enum: PaymentMethodEnum },
 	status: { type: Number, enum: PaymentStatusEnum },
+	orderCode: { type: String },
+	payosTransactionId: { type: String },
+	payerName: { type: String },
+	amountPaid: { type: Number },
 });
 
 export const PaymentModel = mongoose.model<IPayment, PaymentModelType>(

@@ -12,7 +12,6 @@ async function bootstrap() {
 	app.setGlobalPrefix("/api");
 	app.enableCors({ origin: "*" });
 	app.use(helmet());
-
 	if (Env.ENABLE_SWAGGER) {
 		const config = new DocumentBuilder()
 			.setTitle("API Documentation")
