@@ -10,9 +10,13 @@ import { FeedbackModule } from "@modules/feedback";
 import { AccountModule } from "@modules/account";
 import { ClsModule } from "nestjs-cls";
 import { AuthGuard, AuthModule } from "@modules/auth";
+import { PaymentModule } from "@modules/payment";
+import { MongooseModule } from "@nestjs/mongoose";
+import { AppointmentModule } from "@modules/appoinment";
 
 @Module({
 	imports: [
+		MongooseModule.forRoot("mongodb://localhost:27017/kitswd"),
 		ClsModule.forRoot({
 			global: true,
 			middleware: {
@@ -25,6 +29,8 @@ import { AuthGuard, AuthModule } from "@modules/auth";
 		FeedbackModule,
 		AccountModule,
 		AuthModule,
+		AppointmentModule,
+		PaymentModule,
 	],
 	controllers: [AppController],
 	providers: [

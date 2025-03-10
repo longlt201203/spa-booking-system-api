@@ -13,9 +13,11 @@ import {
 	Post,
 	Put,
 } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { ApiResponseDto, SwaggerApiResponse } from "@utils";
 
 @Controller("spa")
+@ApiBearerAuth()
 export class SpaController {
 	constructor(private readonly spaService: SpaService) {}
 
