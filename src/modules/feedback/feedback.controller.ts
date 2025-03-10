@@ -14,8 +14,10 @@ import {
 	FeedbackResponse,
 	UpdateFeedbackRequest,
 } from "@modules/feedback/dto";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 @Controller("feedback")
+@ApiBearerAuth()
 export class FeedbackController {
 	constructor(private readonly feedbackService: FeedbackService) {}
 
