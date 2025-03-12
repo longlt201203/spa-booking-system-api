@@ -1,4 +1,9 @@
-import { AppointmentDocumentType } from "@db/models";
+import {
+	AccountModel,
+	AppointmentDocumentType,
+	AppointmentModel,
+} from "@db/models";
+import { AppointmentResponse } from "@modules/appoinment/dto";
 import { CreateAppointmentRequest } from "@modules/appoinment/dto/create-appointment.request";
 import { UpdateAppointmentRequest } from "@modules/appoinment/dto/update-appointment.request";
 import { Injectable } from "@nestjs/common";
@@ -30,8 +35,9 @@ export class AppointmentService {
 	}
 
 	async getById(id: string) {
-		return await this.appointmentModel
-			.findById(id)
-			.populate("services spa spaStaff");
+		return await this.appointmentModel.findById(id);
+	}
+	async getAll() {
+		return await AppointmentModel.find();
 	}
 }

@@ -1,10 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 import {
-	IsString,
+	IsMongoId,
 	IsNumber,
 	IsEnum,
 	IsArray,
-	IsMongoId,
+	IsString,
 } from "class-validator";
 import { AppointmentStatusEnum } from "@utils";
 
@@ -12,27 +12,6 @@ export class CreateAppointmentRequest {
 	@ApiProperty()
 	@IsMongoId()
 	customer: string;
-
-	@ApiProperty()
-	@IsMongoId()
-	spa: string;
-
-	@ApiProperty()
-	@IsMongoId()
-	spaStaff: string;
-
-	@ApiProperty()
-	@IsString()
-	customerName: string;
-
-	@ApiProperty()
-	@IsString()
-	customerPhone: string;
-
-	@ApiProperty()
-	@IsString()
-	customerEmail: string;
-
 	@ApiProperty()
 	@IsNumber()
 	total: number;

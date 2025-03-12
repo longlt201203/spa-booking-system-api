@@ -39,4 +39,8 @@ export class AppointmentController {
 	async getById(@Param("id") id: string) {
 		return this.appointmentService.getById(id);
 	}
+	@Get()
+	async getAll() {
+		return this.appointmentService.getAll();
+	}
 }
