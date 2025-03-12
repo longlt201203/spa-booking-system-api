@@ -116,29 +116,4 @@ export class PaymentService {
 			amount: amount,
 		};
 	}
-
-	private verifySignature(data: any, signature: string): boolean {
-		try {
-			// Sắp xếp dữ liệu theo thứ tự các key
-			const sortedData = Object.keys(data)
-				.sort()
-				.map((key) => `${key}=${encodeURIComponent(data[key])}`) // Mã hóa các giá trị đặc biệt
-				.join("&");
-
-			// Tính toán chữ ký
-			const computedSignature = crypto
-				.createHmac("sha256", process.env.PAYOS_CHECKSUM_KEY)
-				.update(sortedData)
-				.digest("hex");
-
-			console.log("Computed Signature:", computedSignature);
-			console.log("Received Signature:", signature);
-
-			// So sánh chữ ký tính toán và chữ ký nhận được
-			return computedSignature === signature;
-		} catch (error) {
-			console.error("Lỗi khi kiểm tra chữ ký:", error);
-			return false;
-		}
-	}
 }
