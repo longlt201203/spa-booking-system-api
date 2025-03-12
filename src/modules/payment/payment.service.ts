@@ -11,7 +11,6 @@ import {
 import { CreatePaymentRequest, PaymentResponse } from "@modules/payment/dto";
 import { AppointmentStatusEnum, PaymentStatusEnum } from "@utils";
 import * as crypto from "crypto";
-import { Types } from "mongoose";
 const PayOS = require("@payos/node");
 
 @Injectable()
