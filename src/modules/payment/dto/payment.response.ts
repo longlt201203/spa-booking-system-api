@@ -9,11 +9,5 @@ export class PaymentResponse {
 	status: PaymentStatusEnum;
 
 	@ApiProperty()
-	amountPaid: number;
-
-	@ApiProperty()
-	payerName: string;
-
-	@ApiProperty()
-	payosTransactionId: string;
+	amount: number;
 }

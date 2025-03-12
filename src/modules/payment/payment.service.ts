@@ -11,7 +11,6 @@ import {
 import { CreatePaymentRequest, PaymentResponse } from "@modules/payment/dto";
 import { AppointmentStatusEnum, PaymentStatusEnum } from "@utils";
 import * as crypto from "crypto";
-import { Types } from "mongoose";
 const PayOS = require("@payos/node");
 
 @Injectable()
@@ -96,15 +95,10 @@ export class PaymentService {
 	}
 
 	async handlePaymentWebhook(
-		data: any,
+		body: any,
 		signature: string,
 	): Promise<PaymentResponse> {
-		const isValid = this.verifySignature(data, signature);
-		if (!isValid) {
-			throw new Error("Chữ ký không hợp lệ!");
-		}
-
-		const { orderCode, amount, transactionId, counterAccountName } = data;
+		const { orderCode, amount } = body.data;
 
 		const payment = await this.paymentModel.findOne({ orderCode });
 		if (!payment) {
@@ -113,32 +107,34 @@ export class PaymentService {
 
 		payment.status = PaymentStatusEnum.SUCCESS;
 		payment.amountPaid = amount;
-		payment.payerName = counterAccountName;
-		payment.payosTransactionId = transactionId;
 		payment.updatedAt = new Date();
 		await payment.save();
 
 		return {
 			orderCode,
 			status: PaymentStatusEnum.SUCCESS,
-			amountPaid: amount,
-			payerName: counterAccountName,
-			payosTransactionId: transactionId,
+			amount: amount,
 		};
 	}
 
 	private verifySignature(data: any, signature: string): boolean {
 		try {
+			// Sắp xếp dữ liệu theo thứ tự các key
 			const sortedData = Object.keys(data)
 				.sort()
-				.map((key) => `${key}=${data[key]}`)
+				.map((key) => `${key}=${encodeURIComponent(data[key])}`) // Mã hóa các giá trị đặc biệt
 				.join("&");
 
+			// Tính toán chữ ký
 			const computedSignature = crypto
 				.createHmac("sha256", process.env.PAYOS_CHECKSUM_KEY)
 				.update(sortedData)
 				.digest("hex");
 
+			console.log("Computed Signature:", computedSignature);
+			console.log("Received Signature:", signature);
+
+			// So sánh chữ ký tính toán và chữ ký nhận được
 			return computedSignature === signature;
 		} catch (error) {
 			console.error("Lỗi khi kiểm tra chữ ký:", error);
