@@ -2,15 +2,22 @@ import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { PaymentController } from "@modules/payment/payment.controller";
 import { PaymentService } from "@modules/payment/payment.service";
-import { PaymentModel, AppointmentModel } from "@db/models";
+import { PaymentModel } from "@db/models";
+import { AppointmentModule } from "@modules/appoinment";
 
 @Module({
 	imports: [
 		MongooseModule.forFeature([
-			{ name: PaymentModel.name, schema: PaymentModel.schema },
-			{ name: AppointmentModel.name, schema: AppointmentModel.schema },
+			{ name: "Payment", schema: PaymentModel.schema },
+		]),
+		AppointmentModule,
+	],
+	exports: [
+		MongooseModule.forFeature([
+			{ name: "Payment", schema: PaymentModel.schema },
 		]),
 	],
+
 	providers: [PaymentService],
 	controllers: [PaymentController],
 })

@@ -1,5 +1,5 @@
 import { PaymentMethodEnum, PaymentStatusEnum } from "@utils";
-import { AppointmentDocumentType } from "./appointment.model";
+import { AppointmentDocumentType, IAppointment } from "./appointment.model";
 import mongoose, { HydratedDocument, Model, Schema } from "mongoose";
 
 export interface IPayment {

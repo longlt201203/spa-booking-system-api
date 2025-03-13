@@ -4,10 +4,6 @@ import { PaymentMethodEnum } from "@utils";
 
 export class CreatePaymentRequest {
 	@ApiProperty()
-	@IsString()
-	orderCode: string;
-
-	@ApiProperty()
 	@IsNumber()
 	totalAmount: number;
 

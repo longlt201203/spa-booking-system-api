@@ -1,6 +1,7 @@
-import { AppointmentModel, AppointmentServiceModel } from "@db/models";
+import { AppointmentModel } from "@db/models";
 import { AppointmentController } from "@modules/appoinment/appointment.controller";
 import { AppointmentService } from "@modules/appoinment/appointment.service";
+import { SpaModule } from "@modules/spa";
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 
@@ -8,10 +9,15 @@ import { MongooseModule } from "@nestjs/mongoose";
 	imports: [
 		MongooseModule.forFeature([
 			{ name: "Appointment", schema: AppointmentModel.schema },
-			{ name: "AppointmentService", schema: AppointmentServiceModel.schema },
+		]),
+		SpaModule,
+	],
+	exports: [
+		MongooseModule.forFeature([
+			{ name: "Appointment", schema: AppointmentModel.schema },
 		]),
 	],
-	controllers: [AppointmentController],
 	providers: [AppointmentService],
+	controllers: [AppointmentController],
 })
 export class AppointmentModule {}

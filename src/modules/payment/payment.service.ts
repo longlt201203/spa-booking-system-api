@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import mongoose, { Model } from "mongoose";
 import {
 	AppointmentDocumentType,
 	AppointmentModel,
@@ -11,16 +11,15 @@ import {
 import { CreatePaymentRequest, PaymentResponse } from "@modules/payment/dto";
 import { AppointmentStatusEnum, PaymentStatusEnum } from "@utils";
 import * as crypto from "crypto";
-import { Types } from "mongoose";
 const PayOS = require("@payos/node");
 
 @Injectable()
 export class PaymentService {
 	private payos: any;
 	constructor(
-		@InjectModel(PaymentModel.name)
+		@InjectModel("Payment")
 		private readonly paymentModel: Model<PaymentDocumentType>,
-		@InjectModel(AppointmentModel.name)
+		@InjectModel("Appointment")
 		private readonly appointmentModel: Model<AppointmentModelType>,
 	) {
 		console.log("PAYOS_CLIENT_ID:", process.env.PAYOS_CLIENT_ID);
@@ -37,11 +36,15 @@ export class PaymentService {
 		const { totalAmount, method, appointmentId } = createPaymentDto;
 		console.log("Database:", this.appointmentModel.db.name);
 		console.log("Collection:", this.appointmentModel.collection.name);
-		const appointment = (await this.appointmentModel.findById(
-			new Types.ObjectId(appointmentId),
-		)) as AppointmentDocumentType;
-		console.log("appointment:", appointment);
 		const orderCode = Math.floor(100000 + Math.random() * 900000);
+
+		if (!mongoose.Types.ObjectId.isValid(appointmentId)) {
+			throw new Error("appointmentId không hợp lệ");
+		}
+		const appointment = (await this.appointmentModel.findById(
+			appointmentId,
+		)) as AppointmentDocumentType;
+		console.log("Appointment :", appointment);
 		if (!appointment) {
 			throw new Error("Không tìm thấy cuộc hẹn");
 		}
@@ -50,6 +53,17 @@ export class PaymentService {
 		appointment.updatedAt = new Date();
 		await appointment.save();
 
+		const payment = new this.paymentModel({
+			amount: totalAmount,
+			appointment: appointmentId,
+			method: method,
+			status: PaymentStatusEnum.PENDING,
+			orderCode: orderCode,
+			createdAt: new Date(),
+			updatedAt: new Date(),
+		});
+
+		await payment.save();
 		const paymentData = {
 			clientId: process.env.PAYOS_CLIENT_ID,
 			orderCode: orderCode,
@@ -81,15 +95,10 @@ export class PaymentService {
 	}
 
 	async handlePaymentWebhook(
-		data: any,
+		body: any,
 		signature: string,
 	): Promise<PaymentResponse> {
-		const isValid = this.verifySignature(data, signature);
-		if (!isValid) {
-			throw new Error("Chữ ký không hợp lệ!");
-		}
-
-		const { orderCode, amount, transactionId, counterAccountName } = data;
+		const { orderCode, amount } = body.data;
 
 		const payment = await this.paymentModel.findOne({ orderCode });
 		if (!payment) {
@@ -98,36 +107,13 @@ export class PaymentService {
 
 		payment.status = PaymentStatusEnum.SUCCESS;
 		payment.amountPaid = amount;
-		payment.payerName = counterAccountName;
-		payment.payosTransactionId = transactionId;
 		payment.updatedAt = new Date();
 		await payment.save();
 
 		return {
 			orderCode,
 			status: PaymentStatusEnum.SUCCESS,
-			amountPaid: amount,
-			payerName: counterAccountName,
-			payosTransactionId: transactionId,
+			amount: amount,
 		};
-	}
-
-	private verifySignature(data: any, signature: string): boolean {
-		try {
-			const sortedData = Object.keys(data)
-				.sort()
-				.map((key) => `${key}=${data[key]}`)
-				.join("&");
-
-			const computedSignature = crypto
-				.createHmac("sha256", process.env.PAYOS_CHECKSUM_KEY)
-				.update(sortedData)
-				.digest("hex");
-
-			return computedSignature === signature;
-		} catch (error) {
-			console.error("Lỗi khi kiểm tra chữ ký:", error);
-			return false;
-		}
 	}
 }
