@@ -1,26 +1,23 @@
+import { AppointmentDocumentType } from "@db/models";
 import { ApiProperty } from "@nestjs/swagger";
-import {
-	IsMongoId,
-	IsNumber,
-	IsEnum,
-	IsArray,
-	IsString,
-} from "class-validator";
 import { AppointmentStatusEnum } from "@utils";
 
-export class CreateAppointmentRequest {
+export class AppointmentResponse {
 	@ApiProperty()
-	@IsMongoId()
-	customer: string;
+	id: string;
+
 	@ApiProperty()
-	@IsNumber()
+	customerName: string;
+
+	@ApiProperty()
 	total: number;
 
 	@ApiProperty({ enum: AppointmentStatusEnum })
-	@IsEnum(AppointmentStatusEnum)
 	status: AppointmentStatusEnum;
 
 	@ApiProperty()
-	@IsArray()
-	services: string[];
+	createdAt: Date;
+
+	@ApiProperty()
+	updatedAt: Date;
 }

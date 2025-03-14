@@ -1,9 +1,10 @@
-import { Controller, Post, Body, Res, Query } from "@nestjs/common";
+import { Controller, Post, Body, Res, Query, Get } from "@nestjs/common";
 import { PaymentService } from "./payment.service";
 import { CreatePaymentRequest } from "./dto/create-payment.request";
 import { Response } from "express";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import { SkipAuth } from "@modules/auth";
+import { PaymentDocumentType } from "@db/models";
 
 @Controller("payment")
 export class PaymentController {
@@ -24,7 +25,11 @@ export class PaymentController {
 			res.status(500).json({ error: error.message });
 		}
 	}
-
+	@Get()
+	@ApiBearerAuth()
+	async getAllPayments(): Promise<PaymentDocumentType[]> {
+		return this.paymentService.getAllPayments();
+	}
 	@Post("webhook")
 	@SkipAuth()
 	async handleWebhook(@Body() body: any, @Res() res: Response) {
@@ -42,5 +47,10 @@ export class PaymentController {
 			console.error("Error details:", error);
 			res.status(400).json({ error: error.message });
 		}
+	}
+	@Get("cancel")
+	@SkipAuth()
+	cancelPayment() {
+		return "Payment cancelled";
 	}
 }

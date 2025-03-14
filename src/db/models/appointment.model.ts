@@ -2,11 +2,10 @@ import { AppointmentStatusEnum } from "@utils";
 import mongoose, { HydratedDocument, Model, ObjectId, Schema } from "mongoose";
 import { SpaDocumentType } from "./spa.model";
 import { AppointmentServiceDocumentType } from "./appointment-service.model";
+import { AccountDocumentType } from "@db/models/account.model";
 
 export interface IAppointment {
-	customer: ObjectId;
-	spa: SpaDocumentType;
-	spaStaff: ObjectId;
+	customer: AccountDocumentType[];
 	customerName: string;
 	customerPhone: string;
 	customerEmail: string;
@@ -28,17 +27,12 @@ export type AppointmentModelType = Model<
 >;
 
 const AppointmentSchema = new Schema<IAppointment, AppointmentModelType>({
-	customer: { type: Schema.Types.ObjectId, required: true },
-	spa: { type: Schema.Types.ObjectId, required: true, ref: "Spa" },
-	spaStaff: { type: Schema.Types.ObjectId, required: true },
-	customerName: { type: String, required: true },
-	customerPhone: { type: String, required: true },
-	customerEmail: { type: String, required: true },
+	customer: [{ type: [Schema.Types.ObjectId], ref: "Account" }],
 	total: { type: Number, required: true },
 	createdAt: { type: Date, default: () => new Date() },
 	updatedAt: { type: Date, default: () => new Date() },
 	status: { type: Number, enum: AppointmentStatusEnum },
-	services: [{ type: [Schema.Types.ObjectId], ref: "AppointmentService" }],
+	services: [{ type: [Schema.Types.ObjectId], ref: "Service" }],
 });
 
 export const AppointmentModel = mongoose.model<
