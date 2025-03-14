@@ -12,7 +12,7 @@ export class AppointmentResponse {
 	@ApiProperty()
 	total: number;
 
-	@ApiProperty()
+	@ApiProperty({ enum: AppointmentStatusEnum })
 	status: AppointmentStatusEnum;
 
 	@ApiProperty()
@@ -20,19 +20,4 @@ export class AppointmentResponse {
 
 	@ApiProperty()
 	updatedAt: Date;
-
-	static fromDocument(d: AppointmentDocumentType): AppointmentResponse {
-		return {
-			id: d._id.toString(),
-			customerName: d.customerName,
-			createdAt: d.createdAt,
-			updatedAt: d.updatedAt,
-			total: d.total,
-			status: AppointmentStatusEnum.ACCEPTED,
-		};
-	}
-
-	static fromDocuments(d: AppointmentDocumentType[]) {
-		return d.map(this.fromDocument);
-	}
 }
