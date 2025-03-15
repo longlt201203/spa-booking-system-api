@@ -5,11 +5,13 @@ import {
 	IsEnum,
 	IsArray,
 	IsString,
+	IsNotEmpty,
+	Validate,
 } from "class-validator";
-import { AppointmentStatusEnum } from "@utils";
+import { AppointmentStatusEnum, TimeValidator } from "@utils";
 
 export class CreateAppointmentRequest {
-	@ApiProperty()
+	@ApiProperty({ example: "customerId" })
 	@IsMongoId()
 	customer: string;
 	@ApiProperty()
@@ -23,4 +25,13 @@ export class CreateAppointmentRequest {
 	@ApiProperty()
 	@IsArray()
 	services: string[];
+	@ApiProperty({ example: "00:00" })
+	@IsString({ message: "Thời gian phải là chuỗi ký tự" })
+	@IsNotEmpty({ message: "Thời gian không được để trống" })
+	@Validate(TimeValidator)
+	time: string;
+	@ApiProperty({ description: "Ngày của cuộc hẹn ở định dạng YYYY-MM-DD" })
+	@IsString({ message: "Ngày phải là chuỗi ký tự" })
+	@IsNotEmpty({ message: "Ngày không được để trống" })
+	date: string;
 }

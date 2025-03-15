@@ -15,6 +15,8 @@ export const Env = {
 	APP_BASE_URL: process.env.APP_BASE_URL || "",
 	APP_DOMAIN: process.env.APP_DOMAIN || "",
 	APP_NAME: process.env.APP_NAME || "",
+	PAYOS_RETURN_URL: process.env.PAYOS_CANCEL_URL || "",
+	PAYOS_CANCEL_URL: process.env.PAYOS_RETURN_URL || "",
 } as const;
 
 console.log(Env);

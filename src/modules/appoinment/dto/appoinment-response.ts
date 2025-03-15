@@ -20,4 +20,8 @@ export class AppointmentResponse {
 
 	@ApiProperty()
 	updatedAt: Date;
+	@ApiProperty({ description: "Thời gian cuộc hẹn" })
+	time: string;
+	@ApiProperty({ description: "Ngày của cuộc hẹn" })
+	date: string;
 }
