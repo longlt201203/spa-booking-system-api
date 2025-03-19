@@ -21,11 +21,11 @@ export type PaymentModelType = Model<IPayment, {}, {}, {}, PaymentDocumentType>;
 
 const PaymentSchema = new Schema<IPayment, PaymentModelType>({
 	amount: { type: Number, required: true },
-	// appointment: {
-	// 	type: Schema.Types.ObjectId,
-	// 	required: true,
-	// 	ref: "Appointment",
-	// },
+	appointment: {
+		type: Schema.Types.ObjectId,
+		required: true,
+		ref: "Appointment",
+	},
 	createdAt: { type: Date, default: () => new Date() },
 	updatedAt: { type: Date, default: () => new Date() },
 	method: { type: Number, enum: PaymentMethodEnum },

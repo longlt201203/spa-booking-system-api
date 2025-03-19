@@ -3,6 +3,8 @@ import { PaymentStatusEnum } from "@utils";
 
 export class PaymentResponse {
 	@ApiProperty()
+	appointmentId: string;
+	@ApiProperty()
 	orderCode: string;
 
 	@ApiProperty()

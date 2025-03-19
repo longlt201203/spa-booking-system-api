@@ -1,6 +1,6 @@
 import { AccountDocumentType } from "@db/models";
 import { ApiProperty } from "@nestjs/swagger";
-import { AccountRoleEnum } from "@utils";
+import { AccounStatusEnum, AccountRoleEnum } from "@utils";
 
 export class AccountResponse {
 	@ApiProperty()
@@ -14,7 +14,8 @@ export class AccountResponse {
 
 	@ApiProperty()
 	role: AccountRoleEnum;
-
+	@ApiProperty()
+	status: AccounStatusEnum;
 	@ApiProperty()
 	createdAt: Date;
 
@@ -41,6 +42,7 @@ export class AccountResponse {
 			lName: d.lName,
 			phone: d.phone,
 			role: d.role,
+			status: d.status,
 			avt: d.avt,
 			dob: d.dob,
 			createdAt: d.createdAt,
