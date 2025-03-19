@@ -22,3 +22,8 @@ export enum PaymentStatusEnum {
 	SUCCESS,
 	FAILED,
 }
+
+export enum AccounStatusEnum {
+	FREE,
+	BUSY,
+}
