@@ -18,22 +18,22 @@ export class AccountService {
 	}
 
 	async updateOne(id: string, dto: UpdateAccountRequest) {
-		const account = await AccountModel.findByIdAndUpdate(
-			id,
-			{
-				...dto,
-				password: await bcrypt.hash(dto.password, 10),
-			},
-			{
-				new: true,
-			},
-		);
+		const updateData: any = { ...dto };
+		if (dto.password) {
+			updateData.password = await bcrypt.hash(dto.password, 10);
+		}
+		const account = await AccountModel.findByIdAndUpdate(id, updateData, {
+			new: true,
+		});
 		if (!account) throw new NotFoundException("Account not found!");
 		return account;
 	}
-
 	async findMany(query: AccountQuery) {
-		return await AccountModel.find();
+		const filter: any = {};
+		if (query.role !== undefined) {
+			filter.role = query.role;
+		}
+		return await AccountModel.find(filter);
 	}
 
 	async findOne(id: string) {

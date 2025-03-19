@@ -1,4 +1,4 @@
-import { AccountRoleEnum } from "@utils";
+import { AccounStatusEnum, AccountRoleEnum } from "@utils";
 import mongoose, { HydratedDocument, Model, Schema } from "mongoose";
 
 export interface IAccount {
@@ -12,6 +12,7 @@ export interface IAccount {
 	lName: string;
 	dob?: string;
 	avt?: string;
+	status: AccounStatusEnum;
 }
 
 export type AccountDocumentType = HydratedDocument<IAccount>;
@@ -26,6 +27,11 @@ const AccountSchema = new Schema<IAccount, AccountModelType>({
 		type: Number,
 		enum: AccountRoleEnum,
 		default: AccountRoleEnum.CUSTOMER,
+	},
+	status: {
+		type: Number,
+		enum: AccounStatusEnum,
+		default: AccounStatusEnum.FREE,
 	},
 	avt: { type: String, required: false },
 	fName: { type: String, required: true },
