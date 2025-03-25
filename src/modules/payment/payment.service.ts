@@ -22,10 +22,6 @@ export class PaymentService {
 		@InjectModel("Appointment")
 		private readonly appointmentModel: Model<AppointmentModelType>,
 	) {
-		console.log("PAYOS_CLIENT_ID:", process.env.PAYOS_CLIENT_ID);
-		console.log("PAYOS_API_KEY:", process.env.PAYOS_API_KEY);
-		console.log("PAYOS_CHECKSUM_KEY:", process.env.PAYOS_CHECKSUM_KEY);
-		console.log("PAYOS_CANCEL_URL:", process.env.PAYOS_CANCEL_URL);
 		this.payos = new PayOS(
 			process.env.PAYOS_CLIENT_ID,
 			process.env.PAYOS_API_KEY,
@@ -115,9 +111,12 @@ export class PaymentService {
 			orderCode,
 			status: PaymentStatusEnum.SUCCESS,
 			amount: amount,
+			appointmentId: payment.appointment
+				? payment.appointment.toString()
+				: null,
 		};
 	}
 	async getAllPayments(): Promise<PaymentDocumentType[]> {
-		return await this.paymentModel.find().exec();
+		return await this.paymentModel.find().populate("appointment").exec();
 	}
 }
