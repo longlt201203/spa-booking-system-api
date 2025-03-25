@@ -46,7 +46,6 @@ export class PaymentService {
 			throw new Error("Không tìm thấy cuộc hẹn");
 		}
 
-		appointment.status = AppointmentStatusEnum.FINISHED;
 		appointment.updatedAt = new Date();
 		await appointment.save();
 
