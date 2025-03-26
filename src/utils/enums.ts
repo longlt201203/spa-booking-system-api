@@ -27,3 +27,8 @@ export enum AccounStatusEnum {
 	FREE,
 	BUSY,
 }
+
+export enum PromotionStatusEnum {
+	AVAILABLE,
+	EXPIRE,
+}

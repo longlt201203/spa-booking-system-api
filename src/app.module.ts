@@ -14,6 +14,8 @@ import { PaymentModule } from "@modules/payment";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AppointmentModule } from "@modules/appoinment";
 import { BlogModule } from "@modules/blog";
+import { PromotionModule } from "@modules/promotion/promotion.module";
+import { TotalPaymentModule } from "@modules/total-payment";
 
 @Module({
 	imports: [
@@ -33,6 +35,8 @@ import { BlogModule } from "@modules/blog";
 		AuthModule,
 		AppointmentModule,
 		PaymentModule,
+		PromotionModule,
+		TotalPaymentModule,
 	],
 	controllers: [AppController],
 	providers: [
