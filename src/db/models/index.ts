@@ -6,3 +6,4 @@ export * from "./feedback.model";
 export * from "./appointment-service.model";
 export * from "./payment.model";
 export * from "./category.model";
+export * from "./blog.model";
