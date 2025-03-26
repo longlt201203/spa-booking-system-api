@@ -7,3 +7,5 @@ export * from "./appointment-service.model";
 export * from "./payment.model";
 export * from "./category.model";
 export * from "./blog.model";
+export * from "./total-payment.model";
+export * from "./promotion.model";
