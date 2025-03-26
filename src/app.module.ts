@@ -16,7 +16,7 @@ import { AppointmentModule } from "@modules/appoinment";
 
 @Module({
 	imports: [
-		MongooseModule.forRoot("mongodb://localhost:27017/kitswd"),
+		MongooseModule.forRoot("mongodb://localhost:27017/sbs_db"),
 		ClsModule.forRoot({
 			global: true,
 			middleware: {
