@@ -13,6 +13,7 @@ import { AuthGuard, AuthModule } from "@modules/auth";
 import { PaymentModule } from "@modules/payment";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AppointmentModule } from "@modules/appoinment";
+import { BlogModule } from "@modules/blog";
 
 @Module({
 	imports: [
@@ -26,6 +27,7 @@ import { AppointmentModule } from "@modules/appoinment";
 		CategoryModule,
 		SpaModule,
 		ServiceModule,
+		BlogModule,
 		FeedbackModule,
 		AccountModule,
 		AuthModule,
