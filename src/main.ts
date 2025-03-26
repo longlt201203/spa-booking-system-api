@@ -1,7 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { Env } from "@utils";
-import helmet from "helmet";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { initDbConnection } from "@db";
 
@@ -11,7 +10,7 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	app.setGlobalPrefix("/api");
 	app.enableCors({ origin: "*" });
-	app.use(helmet());
+	// app.use(helmet());
 	if (Env.ENABLE_SWAGGER) {
 		const config = new DocumentBuilder()
 			.setTitle("API Documentation")
