@@ -23,7 +23,7 @@ import * as path from "path";
 	imports: [
 		ServeStaticModule.forRoot({ rootPath: path.join(process.cwd(), "public") }),
 		MongooseModule.forRoot(
-			`mongodb://${Env.DB_HOST}:${Env.DB_PORT}/${Env.DB_NAME}`,
+			`mongodb://${Env.DB_USER}:${Env.DB_PASS}@${Env.DB_HOST}:${Env.DB_PORT}/${Env.DB_NAME}`,
 		),
 		ClsModule.forRoot({ global: true, middleware: { mount: true } }),
 		CategoryModule,
