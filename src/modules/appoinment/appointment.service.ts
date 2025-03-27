@@ -18,14 +18,16 @@ export class AppointmentService {
 	) {}
 
 	async create(createAppointmentDto: CreateAppointmentRequest) {
-		const newAppointment = new this.appointmentModel(createAppointmentDto);
+		const newAppointment = new this.appointmentModel({
+			...createAppointmentDto,
+		});
 		return await newAppointment.save();
 	}
 
 	async update(id: string, updateAppointmentDto: UpdateAppointmentRequest) {
 		return await this.appointmentModel.findByIdAndUpdate(
 			id,
-			updateAppointmentDto,
+			{ ...updateAppointmentDto, staff: updateAppointmentDto.staff },
 			{ new: true },
 		);
 	}

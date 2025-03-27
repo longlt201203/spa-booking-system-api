@@ -21,9 +21,9 @@ export class UpdateAppointmentRequest {
 	@ApiProperty({ enum: AppointmentStatusEnum })
 	@IsEnum(AppointmentStatusEnum)
 	status: AppointmentStatusEnum;
-	@ApiProperty()
+	@ApiProperty({ example: "staffId" })
 	@IsMongoId()
-	spaStaff: string;
+	staff: string;
 
 	@ApiProperty()
 	@IsArray()
