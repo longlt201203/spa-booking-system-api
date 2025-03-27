@@ -2,7 +2,7 @@ import mongoose, { HydratedDocument, Model, Schema } from "mongoose";
 
 import { IPromotion } from "@db/models/promotion.model";
 import { PaymentStatusEnum } from "@utils";
-import { IProduct, ProductItem } from "@db/models/product.model";
+import { IProduct } from "@db/models/product.model";
 
 export interface IProductPayment {
 	orderCode?: string;
@@ -15,7 +15,6 @@ export interface IProductPayment {
 	payerName?: string;
 	amountPaid?: number;
 	status: PaymentStatusEnum;
-	product: ProductItem[];
 }
 
 export type ProductPaymentDocumentType = HydratedDocument<IProductPayment>;
@@ -32,13 +31,6 @@ const ProductPaymentSchema = new Schema<IProductPayment>({
 	orderCode: { type: String },
 	totalAmount: { type: Number, required: true },
 
-	product: [
-		{
-			product: { type: Schema.Types.ObjectId, ref: "Product", required: true },
-			quantity: { type: Number, required: true },
-			price: { type: Number, required: true },
-		},
-	],
 	description: { type: String, required: true },
 	status: { type: Number, enum: PaymentStatusEnum },
 	promotion: { type: Schema.Types.ObjectId, ref: "Promotion" },

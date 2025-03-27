@@ -1,6 +1,7 @@
-import { ProductModel, ProductPaymentModel } from "@db/models";
+import { ProductModel, ProductPaymentModel, PromotionModel } from "@db/models";
 import { ProductPaymentController } from "@modules/product-payment/product-payment.controller";
 import { ProductPaymentService } from "@modules/product-payment/product-payment.service";
+import { PromotionModule } from "@modules/promotion/promotion.module";
 
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
@@ -9,14 +10,14 @@ import { MongooseModule } from "@nestjs/mongoose";
 	imports: [
 		MongooseModule.forFeature([
 			{ name: "ProductPayment", schema: ProductPaymentModel.schema },
-			{ name: "Product", schema: ProductModel.schema },
 		]),
+		PromotionModule,
 	],
 	exports: [
 		MongooseModule.forFeature([
 			{ name: "ProductPayment", schema: ProductPaymentModel.schema },
-			{ name: "Product", schema: ProductModel.schema },
 		]),
+		PromotionModule,
 	],
 	providers: [ProductPaymentService],
 	controllers: [ProductPaymentController],

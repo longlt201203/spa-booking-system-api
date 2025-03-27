@@ -31,4 +31,14 @@ export class UpdateProductRequest {
 	@IsOptional()
 	@IsMongoId()
 	category?: string;
+
+	@ApiProperty({ required: false })
+	@IsOptional()
+	@IsString()
+	image?: string;
+
+	@ApiProperty({ required: false })
+	@IsOptional()
+	@IsNumber()
+	stock?: number;
 }

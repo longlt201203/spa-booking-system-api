@@ -5,7 +5,6 @@ import { Response } from "express";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import { SkipAuth } from "@modules/auth";
 import { CreateProductPaymentRequest } from "@modules/product-payment/dto";
-import { ProductPaymentDocumentType } from "@db/models/product-payment.model";
 
 @Controller("product-payment")
 export class ProductPaymentController {
@@ -42,11 +41,5 @@ export class ProductPaymentController {
 		} catch (error) {
 			res.status(400).json({ error: error.message });
 		}
-	}
-
-	@Get()
-	@ApiBearerAuth()
-	async getAllProductPayments(): Promise<ProductPaymentDocumentType[]> {
-		return this.productPaymentService.getAllProductPayments();
 	}
 }

@@ -26,4 +26,12 @@ export class CreateProductRequest {
 	@ApiProperty()
 	@IsMongoId()
 	category: string;
+
+	@ApiProperty()
+	@IsString()
+	image: string;
+
+	@ApiProperty()
+	@IsNumber()
+	stock: number;
 }

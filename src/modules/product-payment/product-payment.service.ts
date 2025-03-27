@@ -1,4 +1,4 @@
-import { ProductDocumentType } from "@db/models";
+import { PromotionDocumentType } from "@db/models";
 import { ProductPaymentDocumentType } from "@db/models/product-payment.model";
 import {
 	CreateProductPaymentRequest,
@@ -6,7 +6,7 @@ import {
 } from "@modules/product-payment/dto";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { PaymentStatusEnum } from "@utils";
+import { PaymentStatusEnum, PromotionStatusEnum } from "@utils";
 import { Model } from "mongoose";
 
 const PayOS = require("@payos/node");
@@ -18,8 +18,8 @@ export class ProductPaymentService {
 	constructor(
 		@InjectModel("ProductPayment")
 		private readonly productPaymentModel: Model<ProductPaymentDocumentType>,
-		@InjectModel("Product")
-		private readonly productModel: Model<ProductDocumentType>,
+		@InjectModel("Promotion")
+		private readonly promotionModel: Model<PromotionDocumentType>,
 	) {
 		this.payos = new PayOS(
 			process.env.PAYOS_CLIENT_ID,
@@ -31,14 +31,38 @@ export class ProductPaymentService {
 	async createProductPayment(
 		createProductPaymentDto: CreateProductPaymentRequest,
 	): Promise<string> {
-		const { totalAmount, totalPrice, description, promotion } =
-			createProductPaymentDto;
+		const { totalAmount, description, promotion } = createProductPaymentDto;
 		const orderCode = Math.floor(100000 + Math.random() * 900000);
+
+		let discountAmount = 0;
+		let finalAmount = totalAmount;
+
+		if (promotion) {
+			const promo = await this.promotionModel.findById(promotion);
+			if (!promo || promo.status !== PromotionStatusEnum.AVAILABLE) {
+				throw new Error("Khuyến mãi không hợp lệ hoặc không tồn tại");
+			}
+
+			const now = new Date();
+			if (now < promo.startDate || now > promo.endDate) {
+				throw new Error("Khuyến mãi đã hết hạn hoặc chưa bắt đầu");
+			}
+
+			if (promo.fixedDiscountAmount > 0) {
+				discountAmount = promo.fixedDiscountAmount;
+			} else if (promo.discountPercentage > 0) {
+				discountAmount = (totalAmount * promo.discountPercentage) / 100;
+			}
+
+			discountAmount = Math.min(discountAmount, totalAmount);
+			finalAmount = totalAmount - discountAmount;
+		}
 
 		const productPayment = new this.productPaymentModel({
 			orderCode,
 			totalAmount,
-			totalPrice,
+			discountAmount,
+			finalAmount,
 			description,
 			promotion,
 			status: PaymentStatusEnum.PENDING,
@@ -50,7 +74,7 @@ export class ProductPaymentService {
 
 		const paymentData = {
 			orderCode,
-			amount: totalPrice, // Sử dụng totalPrice làm số tiền thanh toán
+			amount: finalAmount,
 			description: description.slice(0, 25),
 			returnUrl: process.env.PAYOS_RETURN_URL,
 			cancelUrl: process.env.PAYOS_CANCEL_URL,
@@ -67,29 +91,6 @@ export class ProductPaymentService {
 		}
 	}
 
-	// async handleProductPaymentWebhook(body: any, signature: string): Promise<ProductPaymentResponse> {
-	//     const { orderCode, amount } = body.data;
-
-	//     const productPayment = await this.productPaymentModel.findOne({ orderCode });
-	//     if (!productPayment) {
-	//         throw new Error("Không tìm thấy thanh toán!");
-	//     }
-
-	//     productPayment.status = PaymentStatusEnum.SUCCESS;
-	//     productPayment.amountPaid = amount;
-	//     productPayment.updatedAt = new Date();
-	//     await productPayment.save();
-
-	//     return {
-	//         orderCode,
-	//         status: PaymentStatusEnum.SUCCESS,
-	//         amount,
-	//     };
-	// }
-
-	// async getAllProductPayments(): Promise<ProductPaymentDocumentType[]> {
-	//     return await this.productPaymentModel.find().exec();
-	// }
 	async handleProductPaymentWebhook(
 		body: any,
 		signature: string,
@@ -108,23 +109,10 @@ export class ProductPaymentService {
 		productPayment.updatedAt = new Date();
 		await productPayment.save();
 
-		// Giảm số lượng tồn kho
-		for (const item of productPayment.product) {
-			const product = await this.productModel.findById(item.product);
-			if (product) {
-				product.quantity -= item.quantity;
-				await product.save();
-			}
-		}
-
 		return {
 			orderCode,
 			status: PaymentStatusEnum.SUCCESS,
 			amount,
 		};
-	}
-
-	async getAllProductPayments(): Promise<ProductPaymentDocumentType[]> {
-		return await this.productPaymentModel.find().exec();
 	}
 }
