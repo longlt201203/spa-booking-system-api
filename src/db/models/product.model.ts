@@ -1,5 +1,5 @@
 import mongoose, { HydratedDocument, Model, Schema } from "mongoose";
-import { ServiceDocumentType } from "./service.model";
+
 import { IPromotion } from "@db/models/promotion.model";
 import { ICategory } from "@db/models/category.model";
 
