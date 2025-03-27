@@ -10,6 +10,11 @@ import { MongooseModule } from "@nestjs/mongoose";
 			{ name: "Promotion", schema: PromotionModel.schema },
 		]),
 	],
+	exports: [
+		MongooseModule.forFeature([
+			{ name: "Promotion", schema: PromotionModel.schema },
+		]),
+	],
 	providers: [PromotionService],
 	controllers: [PromotionController],
 })

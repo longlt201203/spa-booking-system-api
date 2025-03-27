@@ -18,6 +18,8 @@ import { PromotionModule } from "@modules/promotion/promotion.module";
 import { TotalPaymentModule } from "@modules/total-payment";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import * as path from "path";
+import { ProductPaymentModule } from "@modules/product-payment";
+import { ProductModule } from "@modules/product";
 
 @Module({
 	imports: [
@@ -36,9 +38,11 @@ import * as path from "path";
 		AccountModule,
 		AuthModule,
 		AppointmentModule,
+		ProductModule,
 		PaymentModule,
 		PromotionModule,
 		TotalPaymentModule,
+		ProductPaymentModule,
 	],
 	controllers: [AppController],
 	providers: [
