@@ -3,7 +3,7 @@ import { LoginRequest, RegisterRequest, TokenResponse } from "./dto";
 import { Env, SbsClsStore } from "@utils";
 import { WrongUsernameOrPasswordError } from "./errors";
 import { AccountModel } from "@db/models";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import { ClsService } from "nestjs-cls";
 
@@ -26,9 +26,7 @@ export class AuthService {
 	}
 
 	verifyAccessToken(token: string) {
-		const data = jwt.verify(token, Env.AT_SECRET, {
-			issuer: Env.APP_DOMAIN,
-		});
+		const data = jwt.verify(token, Env.AT_SECRET, { issuer: Env.APP_DOMAIN });
 		return typeof data == "string" ? null : data.sub;
 	}
 
@@ -54,10 +52,7 @@ export class AuthService {
 		const accountId = this.cls.get("account.id");
 		return await AccountModel.findByIdAndUpdate(
 			accountId,
-			{
-				...dto,
-				password: await bcrypt.hash(dto.password, 10),
-			},
+			{ ...dto, password: await bcrypt.hash(dto.password, 10) },
 			{ new: true },
 		);
 	}

@@ -5,7 +5,7 @@ import {
 	AccountQuery,
 } from "./dto";
 import { AccountModel } from "@db/models";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 
 @Injectable()
 export class AccountService {
