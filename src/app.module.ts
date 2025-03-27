@@ -18,17 +18,17 @@ import { PromotionModule } from "@modules/promotion/promotion.module";
 import { TotalPaymentModule } from "@modules/total-payment";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import * as path from "path";
+import { ProductPaymentModule } from "@modules/product-payment";
+import { ProductModule } from "@modules/product";
 
 @Module({
 	imports: [
 		ServeStaticModule.forRoot({ rootPath: path.join(process.cwd(), "public") }),
-		MongooseModule.forRoot(
-			`mongodb://${Env.DB_HOST}:${Env.DB_PORT}/${Env.DB_NAME}`,
-			{
-				user: Env.DB_USER,
-				pass: Env.DB_PASS,
-			},
-		),
+		MongooseModule.forRoot(`mongodb://${Env.DB_HOST}:${Env.DB_PORT}`, {
+			user: Env.DB_USER,
+			pass: Env.DB_PASS,
+			dbName: Env.DB_NAME,
+		}),
 		ClsModule.forRoot({ global: true, middleware: { mount: true } }),
 		CategoryModule,
 		SpaModule,
@@ -38,9 +38,11 @@ import * as path from "path";
 		AccountModule,
 		AuthModule,
 		AppointmentModule,
+		ProductModule,
 		PaymentModule,
 		PromotionModule,
 		TotalPaymentModule,
+		ProductPaymentModule,
 	],
 	controllers: [AppController],
 	providers: [

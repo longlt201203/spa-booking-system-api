@@ -9,3 +9,5 @@ export * from "./category.model";
 export * from "./blog.model";
 export * from "./total-payment.model";
 export * from "./promotion.model";
+export * from "./product-payment.model";
+export * from "./product.model";
