@@ -1,12 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import {
-	IsNumber,
-	IsString,
-	IsOptional,
-	IsMongoId,
-	IsArray,
-	ValidateNested,
-} from "class-validator";
+import { IsNumber, IsString, IsOptional, IsMongoId } from "class-validator";
 
 export class CreateProductPaymentRequest {
 	@ApiProperty({ description: "Tổng giá" })

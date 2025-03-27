@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import mongoose, { Model } from "mongoose";
 import {
@@ -11,6 +11,7 @@ import {
 import { CreatePaymentRequest, PaymentResponse } from "@modules/payment/dto";
 import { AppointmentStatusEnum, PaymentStatusEnum } from "@utils";
 import * as crypto from "crypto";
+import { UpdatePaymentRequest } from "@modules/payment/dto/update-payment";
 const PayOS = require("@payos/node");
 
 @Injectable()
@@ -117,5 +118,25 @@ export class PaymentService {
 	}
 	async getAllPayments(): Promise<PaymentDocumentType[]> {
 		return await this.paymentModel.find().populate("appointment").exec();
+	}
+	async updatePayment(
+		paymentId: string,
+		updatePaymentDto: UpdatePaymentRequest,
+	): Promise<PaymentDocumentType> {
+		const payment = await this.paymentModel
+			.findById(paymentId)
+			.populate("appointment")
+			.exec();
+		if (!payment) {
+			throw new NotFoundException(`Payment with ID ${paymentId} not found`);
+		}
+
+		payment.amount = updatePaymentDto.totalAmount;
+
+		payment.method = updatePaymentDto.method;
+		payment.status = updatePaymentDto.status;
+
+		const updatedPayment = await payment.save();
+		return updatedPayment;
 	}
 }

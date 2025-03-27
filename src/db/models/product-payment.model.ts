@@ -2,7 +2,6 @@ import mongoose, { HydratedDocument, Model, Schema } from "mongoose";
 
 import { IPromotion } from "@db/models/promotion.model";
 import { PaymentStatusEnum } from "@utils";
-import { IProduct } from "@db/models/product.model";
 
 export interface IProductPayment {
 	orderCode?: string;

@@ -15,6 +15,7 @@ export interface IAppointment {
 	status: AppointmentStatusEnum;
 	services: AppointmentServiceDocumentType[];
 	time: string;
+	staff: AccountDocumentType;
 	date: string;
 }
 
@@ -31,6 +32,7 @@ export type AppointmentModelType = Model<
 const AppointmentSchema = new Schema<IAppointment, AppointmentModelType>(
 	{
 		customer: [{ type: [Schema.Types.ObjectId], ref: "Account" }],
+		staff: { type: Schema.Types.ObjectId, ref: "Account" },
 		total: { type: Number, required: true },
 		createdAt: { type: Date, default: () => new Date() },
 		updatedAt: { type: Date, default: () => new Date() },
