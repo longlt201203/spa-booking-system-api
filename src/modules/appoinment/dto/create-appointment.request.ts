@@ -14,6 +14,9 @@ export class CreateAppointmentRequest {
 	@ApiProperty({ example: "customerId" })
 	@IsMongoId()
 	customer: string;
+	@ApiProperty({ example: "staffId" })
+	@IsMongoId()
+	staff: string;
 	@ApiProperty()
 	@IsNumber()
 	total: number;
