@@ -22,13 +22,11 @@ import * as path from "path";
 @Module({
 	imports: [
 		ServeStaticModule.forRoot({ rootPath: path.join(process.cwd(), "public") }),
-		MongooseModule.forRoot(
-			`mongodb://${Env.DB_HOST}:${Env.DB_PORT}/${Env.DB_NAME}`,
-			{
-				user: Env.DB_USER,
-				pass: Env.DB_PASS,
-			},
-		),
+		MongooseModule.forRoot(`mongodb://${Env.DB_HOST}:${Env.DB_PORT}`, {
+			user: Env.DB_USER,
+			pass: Env.DB_PASS,
+			dbName: Env.DB_NAME,
+		}),
 		ClsModule.forRoot({ global: true, middleware: { mount: true } }),
 		CategoryModule,
 		SpaModule,
