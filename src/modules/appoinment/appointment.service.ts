@@ -23,7 +23,6 @@ export class AppointmentService {
 		});
 		return await newAppointment.save();
 	}
-
 	async update(id: string, updateAppointmentDto: UpdateAppointmentRequest) {
 		return await this.appointmentModel.findByIdAndUpdate(
 			id,
