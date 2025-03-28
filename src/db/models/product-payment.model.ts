@@ -5,6 +5,7 @@ import { PaymentStatusEnum } from "@utils";
 
 export interface IProductPayment {
 	orderCode?: string;
+	address: string;
 	totalAmount: number;
 	description: string;
 	promotion?: IPromotion;
@@ -32,9 +33,10 @@ const ProductPaymentSchema = new Schema<IProductPayment>({
 
 	description: { type: String, required: true },
 	status: { type: Number, enum: PaymentStatusEnum },
-	promotion: { type: Schema.Types.ObjectId, ref: "Promotion" },
+	promotion: { type: Schema.Types.ObjectId, ref: "Promotion", required: false },
 	createdAt: { type: Date, default: () => new Date() },
 	updatedAt: { type: Date, default: () => new Date() },
+	address: { type: String, required: true },
 });
 
 export const ProductPaymentModel = mongoose.model<
