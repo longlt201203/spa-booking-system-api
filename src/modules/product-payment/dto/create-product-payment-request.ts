@@ -12,6 +12,6 @@ export class CreateProductPaymentRequest {
 
 	@ApiProperty({ required: false, description: "ID của khuyến mãi (nếu có)" })
 	@IsOptional()
-	@IsMongoId()
+	@IsString()
 	promotion?: string;
 }
