@@ -30,7 +30,7 @@ export class CreatePromotionRequest {
 	@IsNumber()
 	fixedDiscountAmount: number;
 
-	@ApiProperty()
+	@ApiProperty({ required: false })
 	@IsNumber()
 	discountPercentage: number;
 }
