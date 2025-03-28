@@ -115,4 +115,27 @@ export class ProductPaymentService {
 			amount,
 		};
 	}
+	async update(
+		id: string,
+		updateProductPaymentDto: Partial<CreateProductPaymentRequest>,
+	): Promise<ProductPaymentDocumentType> {
+		const payment = await this.productPaymentModel.findById(id).exec();
+		if (!payment) {
+			throw new Error("Không tìm thấy thanh toán!");
+		}
+		Object.assign(payment, updateProductPaymentDto);
+		payment.updatedAt = new Date();
+		return payment.save();
+	}
+
+	async getAllPayments(): Promise<ProductPaymentDocumentType[]> {
+		return await this.productPaymentModel.find().populate("promotion").exec();
+	}
+	// async delete(id: string): Promise<void> {
+	// 	const payment = await this.productPaymentModel.findByIdAndDelete(id).exec();
+	// 	if (!payment) {
+	// 		throw new Error("Không tìm thấy thanh toán!");
+	// 	}
+	// 	await payment.remove();
+	// }
 }

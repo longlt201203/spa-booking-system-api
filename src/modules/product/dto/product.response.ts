@@ -23,8 +23,8 @@ export class ProductResponse {
 	category: string;
 
 	@ApiProperty()
-	image: string; // Thêm thuộc tính image
+	image: string;
 
 	@ApiProperty()
-	stock: number; // Thêm thuộc tính stock
+	stock: number;
 }
