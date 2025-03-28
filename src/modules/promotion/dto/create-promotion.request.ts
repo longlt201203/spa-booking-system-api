@@ -6,6 +6,7 @@ import {
 	IsNumber,
 	IsDateString,
 	IsEnum,
+	IsOptional,
 } from "class-validator";
 
 export class CreatePromotionRequest {
@@ -30,7 +31,8 @@ export class CreatePromotionRequest {
 	@IsNumber()
 	fixedDiscountAmount: number;
 
-	@ApiProperty()
+	@ApiProperty({ required: false })
 	@IsNumber()
+	@IsOptional()
 	discountPercentage: number;
 }
