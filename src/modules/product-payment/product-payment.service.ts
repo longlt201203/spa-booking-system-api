@@ -31,7 +31,8 @@ export class ProductPaymentService {
 	async createProductPayment(
 		createProductPaymentDto: CreateProductPaymentRequest,
 	): Promise<string> {
-		const { totalAmount, description, promotion } = createProductPaymentDto;
+		const { totalAmount, description, promotion, address } =
+			createProductPaymentDto;
 		const orderCode = Math.floor(100000 + Math.random() * 900000);
 
 		let discountAmount = 0;
@@ -64,6 +65,7 @@ export class ProductPaymentService {
 			discountAmount,
 			finalAmount,
 			description,
+			address,
 			promotion,
 			status: PaymentStatusEnum.PENDING,
 			createdAt: new Date(),
@@ -75,6 +77,7 @@ export class ProductPaymentService {
 		const paymentData = {
 			orderCode,
 			amount: finalAmount,
+			address: address,
 			description: description.slice(0, 25),
 			returnUrl: process.env.PAYOS_RETURN_URL,
 			cancelUrl: process.env.PAYOS_CANCEL_URL,

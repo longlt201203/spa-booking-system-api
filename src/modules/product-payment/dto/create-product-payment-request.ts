@@ -14,4 +14,8 @@ export class CreateProductPaymentRequest {
 	@IsOptional()
 	@IsString()
 	promotion?: string;
+
+	@ApiProperty({ description: "Địa chỉ giao hàng" })
+	@IsString()
+	address: string;
 }
